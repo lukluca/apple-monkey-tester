@@ -17,7 +17,9 @@ This is a generic, reusable Swift Package — not tied to any specific app. It w
 
 ## Status
 
-Early scaffold. The `MonkeyTester` API surface exists; the actual random event-generation logic is not implemented yet.
+Working first implementation. `MonkeyTester` generates a pseudo-random stream of taps, double-taps, long-presses, and swipes (up/down/left/right) against the app's currently hittable elements, falling back to a random on-screen coordinate when no element is available or one has gone stale between events.
+
+`MonkeyTester` only works inside a real XCUITest UI-testing session — an Xcode UI test target running against a launched app — not from a plain `swift test` run of this package on its own, since `XCUIApplication`/`XCUIElement` need the UI-testing runner infrastructure Xcode wires up. Call `run()` from your own `XCTestCase` UI test method, after `application.launch()`.
 
 ## Usage
 
@@ -25,15 +27,23 @@ Early scaffold. The `MonkeyTester` API surface exists; the actual random event-g
 import AppleMonkeyTester
 import XCTest
 
-let app = XCUIApplication()
-app.launch()
+final class MonkeyTests: XCTestCase {
+    func testAppSurvivesRandomInput() {
+        let app = XCUIApplication()
+        app.launch()
 
-let tester = MonkeyTester(
-    application: app,
-    configuration: .init(eventCount: 1000)
-)
-tester.run()
+        let tester = MonkeyTester(
+            application: app,
+            configuration: .init(eventCount: 1000, seed: 42)
+        )
+        tester.run()
+
+        XCTAssertEqual(app.state, .runningForeground)
+    }
+}
 ```
+
+Reuse the same `seed` to reproduce a run exactly — useful for replaying a crash a previous run found.
 
 ## License
 
