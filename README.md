@@ -1,5 +1,9 @@
 # apple-monkey-tester
 
+[![Swift Versions](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Flukluca%2Fapple-monkey-tester%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/lukluca/apple-monkey-tester)
+[![Platform Compatibility](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Flukluca%2Fapple-monkey-tester%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/lukluca/apple-monkey-tester)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A small, XCUITest-based random-input ("monkey") testing tool for **iOS, iPadOS, and macOS**.
 
 ## Why
