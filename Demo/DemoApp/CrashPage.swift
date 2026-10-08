@@ -12,6 +12,9 @@ struct CrashPage: View {
                 .multilineTextAlignment(.center)
 
             Button("Crash") {
+                // `-noCrash` lets the throughput benchmark run for as long
+                // as it wants without ending the app on its own bug.
+                if CommandLine.arguments.contains("-noCrash") { return }
                 // Deliberate out-of-bounds access — index 10 doesn't exist
                 // in a 3-element array, so this traps.
                 let value = items[10]

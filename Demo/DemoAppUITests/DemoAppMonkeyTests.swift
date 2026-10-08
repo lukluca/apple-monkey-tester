@@ -22,4 +22,29 @@ final class DemoAppMonkeyTests: XCTestCase {
             "expected MonkeyTester's random taps to have reached the Crash button and crashed the app"
         )
     }
+
+    /// Not a correctness test: prints how long a fixed number of events
+    /// takes, on a screen with many elements and with the crash disabled, so
+    /// a change to `MonkeyTester` can be compared before and after on the
+    /// same simulator. Read the `THROUGHPUT` line in the test output.
+    func testThroughput() {
+        let app = XCUIApplication()
+        app.launchArguments = ["-noCrash", "-busy"]
+        app.launch()
+
+        let events = 300
+        let tester = MonkeyTester(
+            application: app,
+            configuration: .init(eventCount: events, seed: 42, actionDelay: 0)
+        )
+        let start = Date()
+        tester.run()
+        let elapsed = Date().timeIntervalSince(start)
+
+        print(String(
+            format: "THROUGHPUT: %d events in %.1f s (%.2f s/event)",
+            events, elapsed, elapsed / Double(events)
+        ))
+        XCTAssertEqual(app.state, .runningForeground)
+    }
 }

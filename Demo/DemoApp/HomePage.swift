@@ -22,6 +22,24 @@ struct HomePage: View {
                     CrashPage()
                 }
                 .accessibilityIdentifier("goToCrashPageLink")
+
+                // `-busy`: a screen with many elements, like a real app's
+                // forms and lists, for the throughput benchmark — the
+                // default two-button screen hides the cost of walking a
+                // big element tree.
+                if CommandLine.arguments.contains("-busy") {
+                    ScrollView {
+                        LazyVGrid(
+                            columns: Array(repeating: GridItem(.flexible()), count: 4)
+                        ) {
+                            ForEach(0..<60, id: \.self) { index in
+                                Button("\(index)") { tapCount += 1 }
+                                    .buttonStyle(.bordered)
+                                    .accessibilityIdentifier("busyButton\(index)")
+                            }
+                        }
+                    }
+                }
             }
             .padding()
             .navigationTitle("Home")
